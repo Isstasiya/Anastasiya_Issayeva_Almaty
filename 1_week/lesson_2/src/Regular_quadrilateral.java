@@ -1,4 +1,4 @@
-package lesson_2;
+
 
 public class Regular_quadrilateral {
 	private double a1;
