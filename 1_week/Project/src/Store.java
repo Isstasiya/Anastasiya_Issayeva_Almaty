@@ -1,12 +1,12 @@
 import java.sql.*;
 
 public class Store {
-	protected double fish_priece; // централизиованнай цена рыб
-	protected double reptile_priece; // централизированная цена рептилий
-	protected String[] reptile_name; // массив с названиями рыб
-	protected String[] fish_name; // массив с названиями рептилий
+	protected double fish_priece;
+	protected double reptile_priece;
+	protected String[] reptile_name;
+	protected String[] fish_name;
 	
-	Store(){ // стандартное создание класса, значение хотите меняйте, я не придумала что поставить
+	Store(){
 		fish_priece = 60;
 		reptile_priece = 20;
 		String[] ef = {"kingfish", "scomber", "tuna"};
@@ -15,7 +15,7 @@ public class Store {
 		reptile_name = df;
 	}
 	
-	Store(double fish_price, double reptile_priece, String[] fish_name, String[] reptile_name){  // создание класса с воводом данных, значение хотите меняйте, я не придумала что поставить
+	Store(double fish_price, double reptile_priece, String[] fish_name, String[] reptile_name){
 		this.fish_priece = fish_price;
 		this.reptile_priece = reptile_priece;
 		this.fish_name = fish_name;
@@ -34,11 +34,11 @@ public class Store {
 		return conn;
 	}
 	
-	public double price(double number, String type) { // просто цена на number кол-во животных типа type
+	public double price(double number, String type) {
 		Connection conn = connect();
 		try {
 			Statement stmt = conn.createStatement();
-			String sql = "SELECT coefficent FROM types WHERE type='" + type + "'"; // Фатима, я там твою базу данных немножко переделала, потому что искать тип было трудно, базу данных прилагаю
+			String sql = "SELECT coefficent FROM types WHERE type='" + type + "'";
 			double res = stmt.executeQuery(sql).getDouble(1);
 			System.out.println(res);
 			for(String i:fish_name) {
