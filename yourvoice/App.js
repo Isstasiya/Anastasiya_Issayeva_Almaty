@@ -60,13 +60,13 @@ const App = () => {
           tabBarIcon: ({ focused, color, size}) => {
             let iconName;
             if(route.name == 'Главная!'){
-              iconName= ''
+              iconName= 'home'
             }
             else if(route.name == 'Детали!'){
-              iconName= ''
+              iconName= "setting"
             }
             return(
-              <Icon name={"setting"} color={color} size={size} />
+              <Icon name={iconName} color={color} size={size} />
             )
           }
         })}
