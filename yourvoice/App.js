@@ -1,75 +1,101 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React, { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator} from '@react-navigation/stack';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import Icon from 'react-native-vector-icons/AntDesign';
+import 'react-native-gesture-handler';
+import {StyleSheet, SafeAreaView, View, Alert, Text, Button, FlatList, TouchableOpacity } from 'react-native';
+Icon.loadFont();
 
-const App: () => React$Node = () => {
+const LogoItem = () => {
+  return(
+    <View style={styles.logoContainer}>
+      <Text style={styles.logoTitle}>Главная</Text>
+      <Icon name="hearto" size={25} color="black"/>
+    </View>
+  )
+}
+
+
+const App = () => {
+  
+  const Stack = createStackNavigator();
+  const Tab = createBottomTabNavigator();
+
+  const Main = ({navigation}) => {
+    return(
+      <TouchableOpacity onPress={() => navigation.navigate('Details')}>
+        <Text>Main window!!</Text>
+      </TouchableOpacity>
+    )
+  }
+  const Details = () => {
+    return(
+      <View>
+        <Text>Details window!!</Text>
+      </View>
+    )
+  }
+
+  const HomeStack = () => {
+    return(
+      <Stack.Navigator>
+        <Stack.Screen name={"Main"} component={Main}/>
+        <Stack.Screen name={"Details"} component={Details}/>
+      </Stack.Navigator>
+    )
+   
+  }
+
   return (
-    <>
-      <SafeAreaView>
-      </SafeAreaView>
-    </>
+    <NavigationContainer>
+      <Tab.Navigator
+        tabBarOptions={{
+          activeTintColor: 'skyblue',
+          inactiveTintColor: 'gray'
+        }}
+        screenOptions={({route}) => ({
+          tabBarIcon: ({ focused, color, size}) => {
+            let iconName;
+            if(route.name == 'Главная!'){
+              iconName= ''
+            }
+            else if(route.name == 'Детали!'){
+              iconName= ''
+            }
+            return(
+              <Icon name={"setting"} color={color} size={size} />
+            )
+          }
+        })}
+      >
+        <Tab.Screen name={'Главная!'} component={HomeStack}/>
+        <Tab.Screen name={'Детали!'} component={Details}/>
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 };
 
+
+
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
+    justifyContent: 'center'
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  logoContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 8
   },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
+  logoTitle: {
     fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+    fontWeight: 'bold',
+  }
 });
 
 export default App;

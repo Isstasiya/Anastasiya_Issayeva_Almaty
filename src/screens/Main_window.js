@@ -18,11 +18,10 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const App: () => React$Node = () => {
+const Main_window: () => React$Node = () => {
 
   return (
-      <SafeAreaView style={styles.container}>
-      </SafeAreaView>
+      <View><Text>Hello world!!</Text></View>
   );
 };
 
@@ -30,4 +29,4 @@ const styles = StyleSheet.create({
 
 }
 );
-export default App;
+export default Main_window;
