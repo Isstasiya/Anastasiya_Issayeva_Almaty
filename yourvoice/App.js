@@ -7,6 +7,10 @@ import { createStackNavigator} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/AntDesign';
 import 'react-native-gesture-handler';
 import {StyleSheet, SafeAreaView, View, Alert, Text, Button, FlatList, TouchableOpacity } from 'react-native';
+import Usefull from './src/screens/Usefull';
+import DetailsScreen from './src/screens/DetailsScreen';
+import Main_window from './src/screens/Main_window';
+import SQLite from 'react-native-sqlite-storage';
 Icon.loadFont();
 
 const LogoItem = () => {
@@ -24,13 +28,21 @@ const App = () => {
   const Stack = createStackNavigator();
   const Tab = createBottomTabNavigator();
 
-  const Main = ({navigation}) => {
-    return(
-      <TouchableOpacity onPress={() => navigation.navigate('Details')}>
-        <Text>Main window!!</Text>
-      </TouchableOpacity>
-    )
+  const db = SQLite.openDatabase({name:'sqlite.db', createFromLocation:'~www/sqlite.db'}, 
+  ()=> handleSuccess(), (error) => handleFail(error));
+
+  const handleFail = (error) => {
+    console.log("fail", {error});
+    db.transaction(tx =>{
+      tx.executeSql('SELECT * FROM Posts', [], (tx, results) => {
+        console.log(results.rows.item(0));
+      })
+    })
   }
+  const handleSuccess = () => {
+    console.log("success")
+  }
+
   const Details = () => {
     return(
       <View>
@@ -42,8 +54,8 @@ const App = () => {
   const HomeStack = () => {
     return(
       <Stack.Navigator>
-        <Stack.Screen name={"Main"} component={Main}/>
-        <Stack.Screen name={"Details"} component={Details}/>
+        <Stack.Screen name="Home" component={Main_window}/>
+        <Stack.Screen name="Details" component={DetailsScreen}/>
       </Stack.Navigator>
     )
    
@@ -59,10 +71,13 @@ const App = () => {
         screenOptions={({route}) => ({
           tabBarIcon: ({ focused, color, size}) => {
             let iconName;
-            if(route.name == 'Главная!'){
+            if(route.name == 'Упражнения'){
               iconName= 'home'
             }
-            else if(route.name == 'Детали!'){
+            else if(route.name == 'Расписание'){
+              iconName= "setting"
+            }
+            else if(route.name == 'Полезное'){
               iconName= "setting"
             }
             return(
@@ -71,8 +86,9 @@ const App = () => {
           }
         })}
       >
-        <Tab.Screen name={'Главная!'} component={HomeStack}/>
-        <Tab.Screen name={'Детали!'} component={Details}/>
+        <Tab.Screen name={'Упражнения'} component={HomeStack}/>
+        <Tab.Screen name={'Расписание'} component={Details}/>
+        <Tab.Screen name={'Полезное'} component={Usefull}/>
       </Tab.Navigator>
     </NavigationContainer>
   );

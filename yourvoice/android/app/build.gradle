@@ -189,6 +189,8 @@ dependencies {
     
     apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
+    implementation project(':react-native-sqlite-storage')
+    
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }
