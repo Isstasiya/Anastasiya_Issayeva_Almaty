@@ -4,44 +4,26 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator} from '@react-navigation/stack';
 
 
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/Feather';
+import Icon1 from 'react-native-vector-icons/Entypo';
+import Icon2 from 'react-native-vector-icons/EvilIcons';
 import 'react-native-gesture-handler';
 import {StyleSheet, SafeAreaView, View, Alert, Text, Button, FlatList, TouchableOpacity } from 'react-native';
 import Usefull from './src/screens/Usefull';
-import DetailsScreen from './src/screens/DetailsScreen';
+import Shedule from './src/screens/Shedule';
 import Main_window from './src/screens/Main_window';
-import SQLite from 'react-native-sqlite-storage';
+import Physical_main from './src/screens/Physical_main';
+import Speaking_main from './src/screens/Speaking_main';
+import Article from './src/screens/Article';
+import HomeScreen from './src/screens/HomeScreen';
+import { Item } from './src/components';
 Icon.loadFont();
-
-const LogoItem = () => {
-  return(
-    <View style={styles.logoContainer}>
-      <Text style={styles.logoTitle}>Главная</Text>
-      <Icon name="hearto" size={25} color="black"/>
-    </View>
-  )
-}
-
+Icon1.loadFont();
+Icon2.loadFont();
 
 const App = () => {
-  
   const Stack = createStackNavigator();
-  const Tab = createBottomTabNavigator();
-
-  const db = SQLite.openDatabase({name:'sqlite.db', createFromLocation:'~www/sqlite.db'}, 
-  ()=> handleSuccess(), (error) => handleFail(error));
-
-  const handleFail = (error) => {
-    console.log("fail", {error});
-    db.transaction(tx =>{
-      tx.executeSql('SELECT * FROM Posts', [], (tx, results) => {
-        console.log(results.rows.item(0));
-      })
-    })
-  }
-  const handleSuccess = () => {
-    console.log("success")
-  }
+  const Tab = createBottomTabNavigator()
 
   const Details = () => {
     return(
@@ -53,20 +35,51 @@ const App = () => {
 
   const HomeStack = () => {
     return(
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={Main_window}/>
-        <Stack.Screen name="Details" component={DetailsScreen}/>
+      <Stack.Navigator navigationOptions={{headerBackground: '#E0AC6A'}}>
+        <Stack.Screen name="Main" component={Main_window} options={{headerTintColor:'#CE7F1A',
+                                                                     headerTitleStyle:{fontWeight:'bold',
+                                                                                        fontSize:24},
+                                                                                        headerStyle:{backgroundColor: '#FFF8EF'}}}/>
+        <Stack.Screen name="Physical" component={Physical_main} options={{headerTintColor:'#CE7F1A',
+                                                                     headerTitleStyle:{fontWeight:'bold',
+                                                                                        fontSize:24},
+                                                                                        headerStyle:{backgroundColor: '#FFF8EF'}}}/>
+        <Stack.Screen name="Speaking" component={Speaking_main} options={{headerTintColor:'#CE7F1A',
+                                                                     headerTitleStyle:{fontWeight:'bold',
+                                                                                        fontSize:24},
+                                                                                        headerStyle:{backgroundColor: '#FFF8EF'}}}/>
+        <Stack.Screen name="Home" component={HomeScreen} options={{headerTintColor:'#CE7F1A',
+                                                                     headerTitleStyle:{fontWeight:'bold',
+                                                                                        fontSize:24},
+                                                                                        headerStyle:{backgroundColor: '#FFF8EF'}}}/>
       </Stack.Navigator>
     )
-   
-  }
+  };
+
+  const DiscoverStack = () =>{
+    return(
+      <Stack.Navigator>
+      <Stack.Screen name="Discover" component={Usefull} options={{headerTintColor:'#CE7F1A',
+                                                                     headerTitleStyle:{fontWeight:'bold',
+                                                                                        fontSize:24},
+                                                                                        headerStyle:{backgroundColor: '#FFF8EF'}}}/>
+      <Stack.Screen name="Article" component={Article} options={{headerTintColor:'#CE7F1A',
+                                                                     headerTitleStyle:{fontWeight:'bold',
+                                                                                        fontSize:24},
+                                                                                        headerStyle:{backgroundColor: '#FFF8EF'}}}/>
+      </Stack.Navigator>
+    )
+  };
 
   return (
     <NavigationContainer>
       <Tab.Navigator
         tabBarOptions={{
-          activeTintColor: 'skyblue',
-          inactiveTintColor: 'gray'
+          activeTintColor: '#FFFFFF',
+          inactiveTintColor: '#DDDDDD',
+          activeBackgroundColor:'#E0AC6A',
+          inactiveBackgroundColor:'#E0AC6A',
+          showLabel:false
         }}
         screenOptions={({route}) => ({
           tabBarIcon: ({ focused, color, size}) => {
@@ -75,10 +88,19 @@ const App = () => {
               iconName= 'home'
             }
             else if(route.name == 'Расписание'){
-              iconName= "setting"
+              iconName= "calendar"
             }
             else if(route.name == 'Полезное'){
-              iconName= "setting"
+              iconName= "magnifying-glass";
+              return(
+                <Icon1 name={iconName} color={color} size={size} />
+              )
+            }
+            else if(route.name == 'Аккаунт'){
+              iconName= "user";
+              return(
+                <Icon name={iconName} color={color} size={size} />
+              )
             }
             return(
               <Icon name={iconName} color={color} size={size} />
@@ -87,31 +109,12 @@ const App = () => {
         })}
       >
         <Tab.Screen name={'Упражнения'} component={HomeStack}/>
-        <Tab.Screen name={'Расписание'} component={Details}/>
-        <Tab.Screen name={'Полезное'} component={Usefull}/>
+        <Tab.Screen name={'Расписание'} component={Shedule}/>
+        <Tab.Screen name={'Полезное'} component={DiscoverStack}/>
+        <Tab.Screen name={'Аккаунт'} component={Shedule}/>
       </Tab.Navigator>
     </NavigationContainer>
   );
 };
-
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center'
-  },
-  logoContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 8
-  },
-  logoTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  }
-});
 
 export default App;

@@ -5,15 +5,17 @@ import { Item } from '../components';
 const DATA = [
   {
     id: '1',
-    title: 'First Item'
+    title: 'Speaking',
+    image:''
   },
   {
     id: '2',
-    title: 'Second Item'
+    title: 'Games',
+    image:''
   },
   {
     id: '3',
-    title: 'Third Item'
+    title: 'Exercises',
   },
 ]
 
@@ -23,7 +25,7 @@ const HomeScreen = ({navigation}) => {
   const renderItem = ({item}) => {
     const backgroundColor = item.id === selectedId ? 'gray' : 'skyblue';
     return(
-      <Item item={item} backgroundColor={backgroundColor}  handleOnPress = {()=> navigation.navigate('Details')}/>
+      <Item item={item} backgroundColor={backgroundColor} handleOnPress = {()=> navigation.navigate('Details')}/>
     )
   }
 

@@ -12,6 +12,8 @@ target 'yourvoice' do
 
   pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
 
+  pod 'RNScreens', :path => '../node_modules/react-native-screens'
+
   target 'yourvoiceTests' do
     inherit! :complete
     # Pods for testing
